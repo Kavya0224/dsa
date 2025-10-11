@@ -10,27 +10,43 @@
  */
 class Solution {
 public:
-  
   ListNode* swapPairs(ListNode* head) {
-    ListNode* dummy = new ListNode(0);
-    dummy->next = head;
-    ListNode* prev = dummy;
+    // Base case: if the list has 0 or 1 node, nothing to swap
+    if (!head || !head->next) return head;
 
-    while (head && head->next) {
-        ListNode* first = head;
-        ListNode* second = head->next;
+    // Nodes to be swapped
+    ListNode* first = head;
+    ListNode* second = head->next;
 
-        // Swapping
-        first->next = second->next;
-        second->next = first;
-        prev->next = second;
+    // Recursively call for the rest of the list beyond the first two nodes
+    first->next = swapPairs(second->next);
 
-        // Re-positioning pointers for next swap
-        prev = first;
-        head = first->next;
-    }
+    // Perform the swap
+    second->next = first;
 
-    return dummy->next;
+    // Now the head is the second node
+    return second;
 }
+
+//   ListNode* swapPairs(ListNode* head) {
+//     ListNode* dummy = new ListNode(0);
+//     dummy->next = head;
+//     ListNode* prev = dummy;
+
+//     while (head && head->next) {
+//         ListNode* first = head;
+//         ListNode* second = head->next;
+
+//         // Swapping
+//         first->next = second->next;
+//         second->next = first;
+//         prev->next = second;
+
+//         // Re-positioning pointers for next swap
+//         prev = first;
+//         head = first->next;
+    // }
+
+    // return dummy->next;
 
 };
