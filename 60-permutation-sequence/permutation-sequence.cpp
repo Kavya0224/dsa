@@ -1,36 +1,39 @@
 class Solution {
 public:
-    string res;
-    bool found = false;
-
-    void helper(vector<int>& nums, vector<bool>& used, int k, string& path, int& ct) {
-        if (found) return;
-        if (path.size() == nums.size()) {
-            ct++;
-            if (ct == k) {
-                res = path;
-                found = true;
+    void permi(string &num, string & temp, string &current,vector<bool>& visited,int n, int& k ){
+        if(current.size()==num.size()){
+             k--;
+            if(k==0){
+                temp=current;
             }
-            return;
+                return ;
         }
 
-        for (int i = 0; i < nums.size(); i++) {
-            if (used[i]) continue;
-            used[i] = true;
-            path += to_string(nums[i]);
-            helper(nums, used, k, path, ct);
-            path.pop_back();
-            used[i] = false;
-        }
+       for(int i = 0; i < num.size(); i++){
+            if(!visited[i]){
+                visited[i]=true;
+                 current.push_back(num[i]);
+                // swap(num[i],num[index]);
+                permi(num,temp,current,visited,n,k);
+                if(k == 0) return;
+                // swap(num[i],num[index]);// reset
+                current.pop_back();
+                visited[i] = false;
+            }
+       }
     }
 
     string getPermutation(int n, int k) {
-        vector<int> nums(n);
-        for (int i = 0; i < n; i++) nums[i] = i + 1;
-        vector<bool> used(n, false);
-        string path = "";
-        int ct = 0;
-        helper(nums, used, k, path, ct);
-        return res;
+        string num="";
+        for(int i=1;i<=n;i++){
+            num += to_string(i);
+
+        }
+        string temp="";
+        string current="";
+        vector<bool>visited(n,false);
+        // int index=0;
+        permi(num, temp,current,visited, n,k);
+        return temp;
     }
 };
