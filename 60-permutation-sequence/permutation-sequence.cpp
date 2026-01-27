@@ -15,7 +15,7 @@ public:
                  current.push_back(num[i]);
                 // swap(num[i],num[index]);
                 permi(num,temp,current,visited,n,k);
-                if(k == 0) return;
+              
                 // swap(num[i],num[index]);// reset
                 current.pop_back();
                 visited[i] = false;
