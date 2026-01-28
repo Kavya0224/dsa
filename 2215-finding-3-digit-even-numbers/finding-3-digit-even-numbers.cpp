@@ -1,24 +1,31 @@
 class Solution {
 public:
-    vector<int> findEvenNumbers(vector<int>& digits) {
-        unordered_set<int> s;
+    unordered_set<int> s;
 
-        int n = digits.size();
-
-        for(int i=0;i<n;i++){
-            for(int j=0;j<n;j++){
-                if(j==i) continue;
-                for(int k=0;k<n;k++){
-                    if(k==i || k==j) continue;
-
-                    if(digits[i]==0) continue;        // no leading zero
-                    if(digits[k]%2!=0) continue;     // must be even
-
-                    int num = digits[i]*100 + digits[j]*10 + digits[k];
-                    s.insert(num);
-                }
-            }
+    void helper(vector<int>& nums, vector<bool>& used, int count, int temp) {
+        // when exactly 3 digits formed
+        if (count == 3) {
+            if (temp % 2 == 0)        // must be even
+                s.insert(temp);
+            return;
         }
+
+        for (int i = 0; i < nums.size(); i++) {
+
+            if (used[i]) continue;
+
+            // leading zero not allowed
+            if (count == 0 && nums[i] == 0) continue;
+
+            used[i] = true;
+            helper(nums, used, count + 1, temp * 10 + nums[i]);
+            used[i] = false;
+        }
+    }
+
+    vector<int> findEvenNumbers(vector<int>& digits) {
+        vector<bool> used(digits.size(), false);
+        helper(digits, used, 0, 0);
 
         vector<int> ans(s.begin(), s.end());
         sort(ans.begin(), ans.end());
