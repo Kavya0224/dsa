@@ -1,16 +1,19 @@
 class Solution {
 public:
     vector<string> findRepeatedDnaSequences(string s) {
-        if (s.size() < 10) return {};
+        if(s.size()<10) return {};
+        unordered_set<string> st;
+        unordered_set<string> ans;
 
-        unordered_set<string> seen, repeated;
-
-        for (int i = 0; i + 9 < s.size(); i++) {
-            string cur = s.substr(i, 10);
-            if (seen.count(cur)) repeated.insert(cur);
-            else seen.insert(cur);
+        for(int r=0;r<s.size()-9;r++){
+            string temp=s.substr(r,10);
+            if(st.count(temp)){
+                ans.insert(temp);
+            }
+            st.insert(temp);
+           
         }
-
-        return vector<string>(repeated.begin(), repeated.end());
+        vector<string> res(ans.begin(),ans.end());
+        return res;
     }
 };
