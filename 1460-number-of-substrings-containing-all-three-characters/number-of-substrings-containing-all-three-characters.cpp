@@ -1,20 +1,23 @@
 class Solution {
 public:
     int numberOfSubstrings(string s) {
-        int n = s.size();
-        int cnt[3] = {0, 0, 0};
-        int l = 0;
-        long long ans = 0;
-
-        for (int r = 0; r < n; r++) {
-            cnt[s[r] - 'a']++;
-
-            while (cnt[0] > 0 && cnt[1] > 0 && cnt[2] > 0) {
-                ans += (n - r);          // all endings from r..n-1 work
-                cnt[s[l] - 'a']--;
+        int n=s.size();
+        int l=0;
+        int ct=0;
+        unordered_set<string> st;
+        int a=0,b=0,c=0;
+        for(int i=0;i<n;i++){
+            if(s[i]=='a') a++;
+            if(s[i]=='b') b++;
+            if(s[i]=='c') c++;
+            while(a && b && c){
+                ct+=n-i;
+                if(s[l]=='a') a--;
+                if(s[l]=='b') b--;
+                if(s[l]=='c') c--;
                 l++;
             }
         }
-        return (int)ans;
+        return ct;
     }
 };
