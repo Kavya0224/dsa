@@ -6,7 +6,7 @@ public:
 
         int need = 1 << k;
         unordered_set<string> st;
-        st.reserve(min(n, need) * 2);
+        // st.reserve(min(n, need) * 2);
 
         for (int i = 0; i + k <= n; i++) {
             st.insert(s.substr(i, k));
