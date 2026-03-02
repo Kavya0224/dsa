@@ -4,7 +4,7 @@ public:
         string temp="";
         queue<char> q;
         int i=0;
-        int round=10;
+        int round=4;
         int n=s.size();
         while(round--){
             while(true){
