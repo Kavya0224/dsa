@@ -27,7 +27,7 @@ public:
             curr=next;
         }
         int mx=0;
-        while(head!=NULL && prev!=NULL){
+        while(prev!=NULL){
             mx=max(mx,head->val+prev->val);
             head=head->next;
             prev=prev->next;
