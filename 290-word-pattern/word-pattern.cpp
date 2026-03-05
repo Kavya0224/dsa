@@ -1,40 +1,42 @@
-#include <string>
-#include <vector>
-#include <unordered_map>
-#include <sstream>
-
 class Solution {
 public:
-    bool wordPattern(std::string pattern, std::string s) {
-        std::vector<std::string> words;
-        std::stringstream ss(s);
-        std::string word;
-        while (ss >> word) {
-            words.push_back(word);
-        }
+    bool wordPattern(string pattern, string s) {
+        map<char, string> mp1;
+        map<string, char> mp2;
+        int i1 = 0;
+        int i2 = 0;
+        int n = pattern.size();
+        int m = s.size();
 
-        if (words.size() != pattern.length()) {
-            return false;
-        }
+        while (i1 < n && i2 < m) {
+            string temp = "";
 
-        std::unordered_map<char, std::string> map_c_w;
-        std::unordered_map<std::string, char> map_w_c;
+            while (i2 < m && s[i2] == ' ')
+                i2++;
 
-        for (int i = 0; i < pattern.length(); ++i) {
-            char ch = pattern[i];
-            std::string& current_word = words[i];
-
-            if (map_c_w.count(ch) && map_w_c.count(current_word)) {
-                if (map_c_w[ch] != current_word || map_w_c[current_word] != ch) {
-                    return false;
-                }
-            } else if (map_c_w.count(ch) || map_w_c.count(current_word)) {
-                return false;
-            } else {
-                map_c_w[ch] = current_word;
-                map_w_c[current_word] = ch;
+            while (i2 < m && s[i2] != ' ') {
+                temp += s[i2];
+                i2++;
             }
+
+            if (mp1.count(pattern[i1])) {
+                if (mp1[pattern[i1]] != temp)
+                    return 0;
+            } else {
+                mp1[pattern[i1]] = temp;
+            }
+
+            if (mp2.count(temp)) {
+                if (mp2[temp] != pattern[i1])
+                    return 0;
+            } else {
+                mp2[temp] = pattern[i1];
+            }
+
+            i1++;
         }
-        return true;
+        if ((i1 == n && i2 != m) || (i1 != n && i2 == m))
+            return 0;
+        return 1;
     }
 };
