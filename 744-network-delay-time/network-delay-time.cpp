@@ -16,6 +16,7 @@ public:
             int wt=pq.top().first;
             int u=pq.top().second;
             pq.pop();
+            if(wt!=dist[u]) continue;
             for(auto it:adj[u]){
                 int v=it.first;
                 int time=it.second;
