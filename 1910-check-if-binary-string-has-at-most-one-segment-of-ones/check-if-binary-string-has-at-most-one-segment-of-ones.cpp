@@ -6,7 +6,7 @@ public:
             if(s[i]=='1' && f==0){
                 while(s[i]=='1') i++;
                 f=1;
-                // i--;
+                i--;
             }
             else if(s[i]=='1' && f==1) return false;
         }
