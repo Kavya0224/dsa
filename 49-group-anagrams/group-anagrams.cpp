@@ -21,7 +21,7 @@ public:
 
         vector<vector<string>> result;
         for (auto& entry : ans) {
-            result.push_back((entry.second));
+            result.push_back(move(entry.second));
         }
 
         return result;        
