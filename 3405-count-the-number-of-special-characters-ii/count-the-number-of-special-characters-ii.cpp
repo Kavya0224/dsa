@@ -1,15 +1,32 @@
 class Solution {
 public:
     int numberOfSpecialChars(string word) {
-        bitset<27> A[2];
+        vector<int> lastLower(26, -1);
+        vector<int> firstUpper(26, -1);
 
-        for (auto& ch : word) {
-            int i = ch & 31;
-            int Case = (ch >> 5) & 1;
+        for (int i = 0; i < word.size(); i++) {
 
-            A[Case].set(i, !(Case & A[0][i]));
+            if (islower(word[i])) {
+                lastLower[word[i] - 'a'] = i;
+            }
+
+            else {
+                if (firstUpper[word[i] - 'A'] == -1) {
+                    firstUpper[word[i] - 'A'] = i;
+                }
+            }
         }
 
-        return (A[0] & A[1]).count();
+        int ct = 0;
+
+        for (int i = 0; i < 26; i++) {
+            if (lastLower[i] != -1 &&
+                firstUpper[i] != -1 &&
+                lastLower[i] < firstUpper[i]) {
+                ct++;
+            }
+        }
+
+        return ct;
     }
 };
