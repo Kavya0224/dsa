@@ -16,7 +16,7 @@ public:
                     i++;
                 }
             }
-            else if(intervals[i][0]>end){
+            else{
                 ans.push_back({start,end});
                 start=intervals[i][0];
                 end=intervals[i][1];
