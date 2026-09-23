@@ -15,17 +15,15 @@ public:
 
         sort(starts.begin(), starts.end());
         sort(ends.begin(), ends.end());
-
-        long long total_pairs = (long long)n * (n - 1) / 2;
         long long non_intersecting = 0;
         int j = 0;
         for (int i = 0; i < n; ++i) {
-            while (j < n && starts[j] <= ends[i]) {
+            while (j < n && starts[i] > ends[j]) {
                 j++;
             }
-            non_intersecting += (n - j);
+            non_intersecting += (i - j);
         }
 
-        return total_pairs - non_intersecting;
+        return non_intersecting;
     }
 };
