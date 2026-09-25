@@ -1,63 +1,53 @@
 class Solution {
-public:
-    vector<char> op;
-    vector<vector<string>> st;
-
-    void perf() {
-        int x=st.size()-2, y = st.size()-1;
-        if (op.back()=='+'){
-            // Union
-            st[x].reserve(st[x].size()+st[y].size());
-            st[x].insert(st[x].end(), st[y].begin(), st[y].end());
-        }
-        else { 
-            vector<string> nxt;
-            nxt.reserve(st[x].size()*st[y].size());
-            for (const auto& l : st[x]) {
-                for (const auto& r : st[y]) 
-                    nxt.push_back(l+r);
+    set<string> multiply(const set<string>& set1, const set<string>& set2) {
+        set<string> result;
+        for (const string& s1 : set1) {
+            for (const string& s2 : set2) {
+                result.insert(s1 + s2);
             }
-            st[x]=move(nxt);
         }
-        op.pop_back();
-        st.pop_back();
+        return result;
     }
-    vector<string> braceExpansionII(string& expr) {
-        const int n=expr.size();
-        op.reserve(n);
 
-        char prv='@', cur;
+    set<string> combine(const set<string>& set1, const set<string>& set2) {
+        set<string> result = set1;
+        result.insert(set2.begin(), set2.end());
+        return result;
+    }
 
-        for (int i=0; i<n; i++, prv=cur) {
-            cur = expr[i];
-            switch (cur) {
-            case ',': 
-                while (!op.empty() && op.back() != '{') perf();
-                op.push_back('+');
-                break;
-            case '{':
-                if (prv=='}' || isalpha(prv)) op.push_back('*');
-                op.push_back('{');
-                break;
-            case '}':
-                while (!op.empty() && op.back()!='{') perf();
-                op.pop_back(); 
-                break;
-            default:
-                if (prv=='}') op.push_back('*');
-                string s;
-                for (; i<n && isalpha(expr[i]); i++) s+=expr[i];
-                st.push_back({s});
-                i--;
-                cur=expr[i];
+public:
+    vector<string> braceExpansionII(string expression) {
+        int index = 0;
+        set<string> resultSet = parseExpression(expression, index);
+        return vector<string>(resultSet.begin(), resultSet.end());
+    }
+
+private:
+    set<string> parseExpression(const string& expr, int& i) {
+        set<string> currentUnion;
+        set<string> currentProduct = {""};
+
+        while (i < expr.length() && expr[i] != '}') {
+            if (expr[i] == ',') {
+                currentUnion = combine(currentUnion, currentProduct);
+                currentProduct = {""};
+                i++;
+            } 
+            else if (expr[i] == '{') {
+                i++;
+                set<string> innerSet = parseExpression(expr, i);
+                i++;
+                currentProduct = multiply(currentProduct, innerSet);
+            } 
+            else {
+                string word = "";
+                while (i < expr.length() && isalpha(expr[i])) {
+                    word += expr[i++];
+                }
+                currentProduct = multiply(currentProduct, {word});
             }
         }
 
-        while (!op.empty()) perf();
-
-        auto ans=st.front();
-        sort(ans.begin(), ans.end());
-        ans.erase(unique(ans.begin(), ans.end()), ans.end());
-        return ans;
+        return combine(currentUnion, currentProduct);
     }
 };
