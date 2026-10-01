@@ -12,7 +12,7 @@ public:
         TrieNode* node = root;
         int n = word.length();
         for (int i = 0; i < n; i++) {
-            int index = word[i] * 128 + word[n - 1 - i];
+            int index = word[i] * 32 + word[n - 1 - i];
             if (node->child[index] == NULL) {
                 node->child[index] = new TrieNode();
             }
@@ -26,7 +26,7 @@ public:
         TrieNode* node = root;
         int n = word.length();
         for (int i = 0; i < n; i++) {
-            int index = word[i] * 128 + word[n - 1 - i];
+            int index = word[i] * 32 + word[n - 1 - i];
             if (node->child[index] == NULL)
                 break;
             node = node->child[index];
