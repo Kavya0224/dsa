@@ -1,46 +1,20 @@
 class Solution {
-public:
-    bool dfs(int i, int j, vector<vector<int>>& grid, vector<vector<bool>>& vis) {
-        int n = grid.size();
-        int m = grid[0].size();
+    int m, n;
 
-        // If touches boundary → not closed
-        if (i == 0 || j == 0 || i == n-1 || j == m-1)
-            return false;
-
-        vis[i][j] = true;
-        bool closed = true;
-
-        if (grid[i+1][j] == 0 && !vis[i+1][j])
-            closed &= dfs(i+1, j, grid, vis);
-
-        if (grid[i-1][j] == 0 && !vis[i-1][j])
-            closed &= dfs(i-1, j, grid, vis);
-
-        if (grid[i][j+1] == 0 && !vis[i][j+1])
-            closed &= dfs(i, j+1, grid, vis);
-
-        if (grid[i][j-1] == 0 && !vis[i][j-1])
-            closed &= dfs(i, j-1, grid, vis);
-
-        return closed;
+    bool closed(vector<vector<int>>& grid, int i, int j) {  
+        if (i < 0 || i >= m || j < 0 || j >= n) return false;  
+        if (grid[i][j]) return true; 
+        grid[i][j] = 1; 
+        return closed(grid, i + 1, j) & closed(grid, i - 1, j) & closed(grid, i, j + 1) & closed(grid, i, j - 1); 
     }
 
+public:
     int closedIsland(vector<vector<int>>& grid) {
-        int n = grid.size();
-        int m = grid[0].size();
-        int ct = 0;
-
-        vector<vector<bool>> vis(n, vector<bool>(m, false));
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {   // FIXED
-                if (grid[i][j] == 0 && !vis[i][j]) {
-                    if (dfs(i, j, grid, vis))
-                        ct++;
-                }
-            }
-        }
-        return ct;
+        m = grid.size(), n = grid[0].size();
+        int count = 0;
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                if (!grid[i][j]) count += closed(grid, i, j);
+        return count;
     }
 };
